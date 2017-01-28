@@ -77,10 +77,17 @@ static int
 acpi_asus_als_attach(device_t dev)
 {
     struct acpi_asus_als_softc	*sc;
+    struct acpi_softc	*acpi_sc;
 
     ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
 
     sc = device_get_softc(dev);
+    acpi_sc = acpi_device_get_parent_softc(dev);
+
+    sysctl_ctx_init(&sc->sysctl_ctx);
+    sc->sysctl_tree = SYSCTL_ADD_NODE(&sc->sysctl_ctx,
+            SYSCTL_CHILDREN(acpi_sc->acpi_sysctl_tree),
+            OID_AUTO, "asus_als", CTLFLAG_RD, 0, "");
 
     return (0);
 }
@@ -93,6 +100,8 @@ acpi_asus_als_detach(device_t dev)
     ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
 
     sc = device_get_softc(dev);
+
+    sysctl_ctx_free(&sc->sysctl_ctx);
 
     return (0);
 }
