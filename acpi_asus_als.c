@@ -96,7 +96,7 @@ acpi_asus_als_probe(device_t dev)
 
 	ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
 
-    if (acpi_disabled("asus"))
+    if (acpi_disabled("asus_als"))
         return (ENXIO);
 
     rstr = ACPI_ID_PROBE(device_get_parent(dev), dev, asus_ids);
