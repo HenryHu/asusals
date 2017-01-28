@@ -48,7 +48,7 @@ __FBSDID("$FreeBSD$");
 #include <dev/acpica/acpivar.h>
 
 #define _COMPONENT	ACPI_OEM
-ACPI_MODULE_NAME("ASUS")
+ACPI_MODULE_NAME("ASUS-ALS")
 
 struct acpi_asus_als_softc {
 	device_t		dev;
@@ -99,6 +99,7 @@ acpi_asus_als_probe(device_t dev)
     if (acpi_disabled("asus_als"))
         return (ENXIO);
 
+    /* Check if ambient light sensor is present. */
     rstr = ACPI_ID_PROBE(device_get_parent(dev), dev, asus_ids);
     if (rstr == NULL) {
         return (ENXIO);
@@ -180,11 +181,12 @@ acpi_asus_als_sysctl_get(struct acpi_asus_als_softc *sc)
     int value = 0;
 
     ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
-    ACPI_SERIAL_ASSERT(asus);
+    ACPI_SERIAL_ASSERT(asus_als);
 
     Buf.Pointer = NULL;
     Buf.Length = ACPI_ALLOCATE_BUFFER;
 
+    /* Calls _ALI to get the value. */
     AcpiEvaluateObject(sc->handle, "_ALI", NULL, &Buf);
     Obj = Buf.Pointer;
 
