@@ -51,7 +51,7 @@ acpi_asus_als_probe(device_t dev)
 {
 	static char		*asus_ids[] = { "ACPI0008", NULL };
 
-//	struct acpi_asus_softc	*sc;
+    struct acpi_asus_als_softc	*sc;
     char *rstr;
 
 	ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
@@ -64,6 +64,10 @@ acpi_asus_als_probe(device_t dev)
         return (ENXIO);
     }
 
+    sc = device_get_softc(dev);
+    sc->dev = dev;
+    sc->handle = acpi_get_handle(dev);
+
     device_set_desc_copy(dev, "ASUS ambient light sensor");
 
     return 0;
@@ -72,11 +76,23 @@ acpi_asus_als_probe(device_t dev)
 static int
 acpi_asus_als_attach(device_t dev)
 {
+    struct acpi_asus_als_softc	*sc;
+
+    ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
+
+    sc = device_get_softc(dev);
+
     return (0);
 }
 
 static int
 acpi_asus_als_detach(device_t dev)
 {
+    struct acpi_asus_als_softc	*sc;
+
+    ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
+
+    sc = device_get_softc(dev);
+
     return (0);
 }
