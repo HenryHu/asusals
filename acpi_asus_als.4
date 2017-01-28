@@ -1,0 +1,93 @@
+.\"
+.\" Copyright (c) 2017 Henry Hu <henry.hu.sh@gmail.com>
+.\" All rights reserved.
+.\"
+.\" Redistribution and use in source and binary forms, with or without
+.\" modification, are permitted provided that the following conditions
+.\" are met:
+.\" 1. Redistributions of source code must retain the above copyright
+.\"    notice, this list of conditions and the following disclaimer.
+.\" 2. Redistributions in binary form must reproduce the above copyright
+.\"    notice, this list of conditions and the following disclaimer in the
+.\"    documentation and/or other materials provided with the distribution.
+.\"
+.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
+.\" ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+.\" IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR OR CONTRIBUTORS BE LIABLE
+.\" FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+.\" SUCH DAMAGE.
+.\"
+.\" $FreeBSD$
+.\"
+.Dd January 28, 2017
+.Dt ACPI_ASUS_ALS 4
+.Os
+.Sh NAME
+.Nm acpi_asus_als
+.Nd Asus Ambient Light Sensor
+.Sh SYNOPSIS
+To compile this driver into the kernel,
+place the following line in your
+kernel configuration file:
+.Bd -ragged -offset indent
+.Cd "device acpi_asus_als"
+.Ed
+.Pp
+Alternatively, to load the driver as a
+module at boot time, place the following line in
+.Xr loader.conf 5 :
+.Bd -literal -offset indent
+acpi_asus_als_load="YES"
+.Ed
+.Sh DESCRIPTION
+The
+.Nm
+driver provides support for the ambient light sensor found on recent Asus
+laptops.
+It allows one to use the
+.Xr sysctl 8
+interface to get the ambient light value from the sensor.
+The sensor can be controlled through a WMI call. See
+.Xr acpi_asus_wmi 4
+for details.
+.Sh SYSCTL VARIABLES
+The following sysctls are currently implemented:
+.Bl -tag -width indent
+.It Va hw.acpi.asus_als.light
+The ambient light value, in 0.01 lux.
+.Sh SEE ALSO
+.Xr acpi 4 ,
+.Xr acpi_asus 4 ,
+.Xr acpi_asus_wmi 4 ,
+.Xr sysctl 8
+.Rs
+.%T Asus Zenbook Ambient Light Sensor Driver
+.%U https://github.com/victorenator/als
+.Re
+.Sh HISTORY
+The
+.Nm
+driver first appeared in
+.Fx 12 .
+.Sh AUTHORS
+.An -nosplit
+The
+.Nm
+driver and this manual page were written by
+.An Henry Hu Aq Mt henry.hu.sh@gmail.com .
+.Pp
+Inspiration came from the
+.Em Asus Zenbook Ambient Light Sensor Driver
+started by
+.An Viktar Vaŭčkievič
+which maintains a driver implementing this
+functionality as a
+.Tn Linux
+module.
+
