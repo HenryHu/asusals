@@ -140,5 +140,26 @@ acpi_asus_als_sysctl(SYSCTL_HANDLER_ARGS)
 static int
 acpi_asus_als_sysctl_get(struct acpi_asus_als_softc *sc)
 {
-    return (0);
+    ACPI_BUFFER Buf;
+    ACPI_OBJECT *Obj;
+    int value = 0;
+
+    ACPI_FUNCTION_TRACE((char *)(uintptr_t)__func__);
+    ACPI_SERIAL_ASSERT(asus);
+
+    Buf.Pointer = NULL;
+    Buf.Length = ACPI_ALLOCATE_BUFFER;
+
+    AcpiEvaluateObject(sc->handle, "_ALI", NULL, &Buf);
+    Obj = Buf.Pointer;
+
+    if (Obj->Type != ACPI_TYPE_INTEGER) {
+        device_printf(sc->dev, "_ALI returned non-integer\n");
+    } else {
+        value = Obj->Integer.Value;
+    }
+
+    AcpiOsFree(Buf.Pointer);
+
+    return (value);
 }
